@@ -1,56 +1,66 @@
-import React from 'react';
-import { useDroppable } from '@dnd-kit/core';
-import { cn } from '../lib/utils'; // Keep this one
+import React, { useRef, useEffect } from 'react';
+import { cn } from '../lib/utils';
 
-export function Gap({ gapIndex, operators, onRemove }) {
-  const { isOver, setNodeRef } = useDroppable({
-    id: `gap-${gapIndex}`,
-  });
-
+export function Gap({ gapIndex, content, isActive, onTap }) {
   return (
     <div 
-      ref={setNodeRef}
+      onClick={() => onTap(gapIndex)}
       className={cn(
-        "relative flex items-center justify-center rounded-lg min-w-[30px] h-[50px] transition-all",
-        operators.length === 0 ? "" : "min-w-fit px-1",
-        isOver && "bg-[var(--color-hectoc-green)]/10 scale-110"
+        "relative flex items-center justify-center rounded-lg min-w-[30px] h-[54px] transition-all duration-200 cursor-pointer",
+        content ? "min-w-fit px-0.5" : "",
+        isActive && "bg-[var(--color-hectoc-green)]/15 ring-2 ring-[var(--color-hectoc-green)] ring-offset-1 ring-offset-[var(--color-hectoc-bg)]",
+        !isActive && !content && "active:scale-110 active:bg-white/5"
       )}
     >
-      {operators.length === 0 && (
+      {!content && (
         <div className={cn(
-          "w-1.5 h-1.5 rounded-full bg-gray-600 transition-colors",
-          isOver && "bg-[var(--color-hectoc-green)]"
+          "transition-all duration-200",
+          isActive 
+            ? "w-[2px] h-7 bg-[var(--color-hectoc-green)] animate-pulse rounded-full shadow-[0_0_6px_var(--color-hectoc-green)]" 
+            : "w-2 h-2 rounded-full bg-gray-600"
         )}></div>
       )}
-      {operators.map((op) => (
-        <button
-          key={op.id}
-          onClick={() => onRemove(gapIndex, op.id)}
-          className="text-3xl font-bold text-[var(--color-hectoc-green)] hover:text-red-400 mx-[1px] cursor-pointer"
-        >
-          {op.type}
-        </button>
-      ))}
+      {content && (
+        <span className="text-3xl font-bold text-[var(--color-hectoc-green)] select-none">
+          {content}
+        </span>
+      )}
     </div>
   );
 }
 
-export default function GameBoard({ digits, gaps, onRemoveOperator }) {
+export default function GameBoard({ digits, gapContents, activeGap, onGapTap }) {
   const renderBoard = () => {
     const elements = [];
     
     // Gap 0 (before first digit)
-    elements.push(<Gap key={`gap-0`} gapIndex={0} operators={gaps[0]} onRemove={onRemoveOperator} />);
+    elements.push(
+      <Gap 
+        key={`gap-0`} 
+        gapIndex={0} 
+        content={gapContents[0]}
+        isActive={activeGap === 0}
+        onTap={onGapTap}
+      />
+    );
     
     for (let i = 0; i < digits.length; i++) {
-        // Digit
-        elements.push(
-            <div key={`digit-${i}`} className="text-[2.75rem] font-bold tracking-tight text-white select-none relative -top-[2px]">
-              {digits[i]}
-            </div>
-        );
-        // Following Gap
-        elements.push(<Gap key={`gap-${i+1}`} gapIndex={i+1} operators={gaps[i+1]} onRemove={onRemoveOperator} />);
+      // Digit
+      elements.push(
+        <div key={`digit-${i}`} className="text-[2.75rem] font-bold tracking-tight text-white select-none relative -top-[2px]">
+          {digits[i]}
+        </div>
+      );
+      // Following Gap
+      elements.push(
+        <Gap 
+          key={`gap-${i+1}`} 
+          gapIndex={i+1} 
+          content={gapContents[i+1]}
+          isActive={activeGap === i+1}
+          onTap={onGapTap}
+        />
+      );
     }
 
     return elements;
