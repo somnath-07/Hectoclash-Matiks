@@ -4,7 +4,7 @@ export default function OperatorDock({ onOperatorTap }) {
   const operators = ['+', '-', 'X', '(', ')', '/', '^'];
   
   return (
-    <div className="w-full flex flex-col items-center pt-5 pb-[100px] gap-6 z-20 shrink-0">
+    <div className="w-full flex flex-col items-center pt-5 pb-6 gap-6 z-20 shrink-0">
       <div className="text-[14px] text-white font-medium tracking-wide">
         Type your entire solution using these operators
       </div>

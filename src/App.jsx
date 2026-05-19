@@ -5,7 +5,7 @@ import GameBoard from './components/GameBoard';
 import OperatorDock from './components/OperatorDock';
 
 function App() {
-  const [digits] = useState([2, 4, 9, 3, 8, 4]);
+  const [digits] = useState([1, 9, 6, 2, 6, 4]);
   const [inputValue, setInputValue] = useState('');
   const [currentResult, setCurrentResult] = useState(null);
   const [hasWon, setHasWon] = useState(false);
@@ -53,8 +53,8 @@ function App() {
   };
 
   return (
-    <div className="h-screen h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none overflow-hidden">
-      <div className="relative z-10 w-full max-w-md h-full flex flex-col pt-3 px-5">
+    <div className="min-h-screen min-h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none overflow-y-auto">
+      <div className="relative z-10 w-full max-w-md h-full min-h-[100dvh] flex flex-col justify-start pt-3 px-5">
         <TopBar />
         
         <GameBoard 

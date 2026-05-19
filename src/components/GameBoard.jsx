@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function GameBoard({ digits, inputValue, onInputChange }) {
   return (
-    <div className="w-full flex-1 overflow-hidden flex flex-col items-center justify-center gap-10">
+    <div className="w-full shrink-0 flex flex-col items-center justify-center gap-6 mt-6">
       {/* Digits row */}
       <div className="flex items-center justify-center gap-4 text-white">
         {digits.map((digit, i) => (
