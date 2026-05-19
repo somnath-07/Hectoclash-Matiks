@@ -6,23 +6,24 @@ export function Gap({ gapIndex, operators, onRemove, isSelected, onSelect }) {
     <div 
       onClick={() => onSelect(gapIndex)}
       className={cn(
-        "relative flex items-center justify-center rounded-lg min-w-[34px] h-[54px] transition-all duration-200 cursor-pointer",
-        operators.length === 0 ? "" : "min-w-fit px-1",
-        isSelected && "bg-[var(--color-hectoc-green)]/15 ring-2 ring-[var(--color-hectoc-green)] ring-offset-1 ring-offset-[var(--color-hectoc-bg)] scale-110",
-        !isSelected && operators.length === 0 && "active:scale-110 active:bg-white/5"
+        "relative flex items-center justify-center min-w-[20px] h-[44px] transition-all duration-150 cursor-pointer",
+        operators.length > 0 && "min-w-fit px-0.5",
+        isSelected && "border border-[var(--color-hectoc-green)] rounded-[4px] px-2 py-2"
       )}
     >
       {operators.length === 0 && (
         <div className={cn(
-          "w-2 h-2 rounded-full transition-all duration-200",
-          isSelected ? "bg-[var(--color-hectoc-green)] scale-125 shadow-[0_0_8px_var(--color-hectoc-green)]" : "bg-gray-600"
+          "w-[4px] h-[4px] rounded-full transition-all duration-200",
+          isSelected 
+            ? "bg-[var(--color-hectoc-green)]" 
+            : "bg-gray-600"
         )}></div>
       )}
       {operators.map((op) => (
         <button
           key={op.id}
           onClick={(e) => { e.stopPropagation(); onRemove(gapIndex, op.id); }}
-          className="text-3xl font-bold text-[var(--color-hectoc-green)] hover:text-red-400 active:text-red-500 active:scale-90 mx-[1px] cursor-pointer transition-all duration-150"
+          className="text-xl font-bold text-[var(--color-hectoc-green)] hover:text-red-400 active:text-red-500 active:scale-90 mx-[1px] cursor-pointer transition-all duration-150 touch-manipulation"
         >
           {op.type}
         </button>
@@ -50,7 +51,7 @@ export default function GameBoard({ digits, gaps, onRemoveOperator, selectedGap,
     for (let i = 0; i < digits.length; i++) {
       // Digit
       elements.push(
-        <div key={`digit-${i}`} className="text-[2.75rem] font-bold tracking-tight text-white select-none relative -top-[2px]">
+        <div key={`digit-${i}`} className="text-[2rem] font-bold tracking-tight text-white select-none relative">
           {digits[i]}
         </div>
       );
@@ -71,9 +72,13 @@ export default function GameBoard({ digits, gaps, onRemoveOperator, selectedGap,
   }
 
   return (
-    <div className="flex flex-col items-center w-full mt-10">
-      <div className="flex items-center justify-center w-full max-w-[400px]">
-        {renderBoard()}
+    <div className="w-full flex-1 flex flex-col mt-3 min-h-0">
+      {/* Transparent card container — flex-1 fills available space */}
+      <div className="w-full flex-1 overflow-hidden flex flex-col items-center justify-center">
+        {/* Digits row */}
+        <div className="flex items-center justify-center w-full px-3">
+          {renderBoard()}
+        </div>
       </div>
     </div>
   );

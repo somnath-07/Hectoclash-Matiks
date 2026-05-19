@@ -10,6 +10,7 @@ function App() {
   const [gaps, setGaps] = useState(Array.from({ length: 7 }, () => []));
   const [history, setHistory] = useState([]); // Array of { gapIndex, opId }
   const [selectedGap, setSelectedGap] = useState(null);
+  const [selectedOperator, setSelectedOperator] = useState(null);
   const [currentResult, setCurrentResult] = useState(null);
   const [hasWon, setHasWon] = useState(false);
 
@@ -57,22 +58,35 @@ function App() {
 
   const handleSelectGap = (gapIndex) => {
     if (hasWon) return;
-    setSelectedGap(prev => prev === gapIndex ? null : gapIndex);
+    if (selectedOperator) {
+      const newOpId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      setGaps(prev => {
+        const next = [...prev];
+        next[gapIndex] = [...next[gapIndex], { id: newOpId, type: selectedOperator }];
+        return next;
+      });
+      setHistory(prev => [...prev, { gapIndex, opId: newOpId }]);
+      setSelectedOperator(null);
+    } else {
+      setSelectedGap(prev => prev === gapIndex ? null : gapIndex);
+    }
   };
 
   const handleOperatorTap = (opType) => {
-    if (hasWon || selectedGap === null) return;
+    if (hasWon) return;
     
-    const newOpId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
-    setGaps(prev => {
-      const next = [...prev];
-      next[selectedGap] = [...next[selectedGap], { id: newOpId, type: opType }];
-      return next;
-    });
-
-    setHistory(prev => [...prev, { gapIndex: selectedGap, opId: newOpId }]);
-    // Keep the gap selected so user can add multiple operators to same gap
+    if (selectedGap !== null) {
+      const newOpId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      setGaps(prev => {
+        const next = [...prev];
+        next[selectedGap] = [...next[selectedGap], { id: newOpId, type: opType }];
+        return next;
+      });
+      setHistory(prev => [...prev, { gapIndex: selectedGap, opId: newOpId }]);
+      setSelectedGap(null); // Clear gap after placing operator
+    } else {
+      setSelectedOperator(prev => prev === opType ? null : opType);
+    }
   };
 
   const removeOperator = (gapIndex, opId) => {
@@ -93,10 +107,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none">
-      <div className="fixed inset-0 pointer-events-none bg-grid-pattern opacity-[0.15]"></div>
-      
-      <div className="relative z-10 w-full max-w-md h-screen flex flex-col pt-6 pb-8 px-6 overflow-hidden">
+    <div className="h-screen h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none overflow-hidden">
+      <div className="relative z-10 w-full max-w-md h-full flex flex-col pt-3 pb-[100px] px-5">
         <TopBar />
         
         <GameBoard 
@@ -107,21 +119,10 @@ function App() {
           onSelectGap={handleSelectGap}
         />
 
-        {/* Live Feed Result */}
-        <div className="mt-8 mb-2 flex justify-center h-[54px]">
-          {currentResult !== null ? (
-            <div className="text-2xl font-bold bg-[#333] px-10 py-3 rounded-2xl shadow-inner text-white transition-all transform scale-100">
-              {currentResult}
-            </div>
-          ) : (
-            <div className="w-[120px] h-full bg-[#333] rounded-2xl opacity-60"></div>
-          )}
-        </div>
-
         <OperatorDock 
           onOperatorTap={handleOperatorTap}
+          selectedOperator={selectedOperator}
           onUndo={handleUndo} 
-          onHint={() => alert('Try combining 4 and 9 first!')}
           hasSelectedGap={selectedGap !== null}
         />
 
