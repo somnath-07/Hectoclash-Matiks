@@ -114,8 +114,8 @@ function App() {
       onDragStart={handleDragStart} 
       onDragEnd={handleDragEnd}
     >
-      <div className="min-h-screen min-h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none">
-        <div className="relative z-10 w-full max-w-md h-screen h-[100dvh] flex flex-col pt-4 pb-6 px-5 overflow-hidden">
+      <div className="h-screen h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none overflow-hidden">
+        <div className="relative z-10 w-full max-w-md h-full flex flex-col pt-3 pb-4 px-5">
           <TopBar />
           
           <GameBoard 

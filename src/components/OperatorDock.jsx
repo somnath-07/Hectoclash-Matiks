@@ -19,8 +19,8 @@ export function DraggableOperator({ type, id, isOverlay = false }) {
       {...listeners}
       {...attributes}
       className={cn(
-        "w-[60px] h-[60px] rounded-full border flex items-center justify-center font-semibold text-2xl touch-none select-none transition-all duration-150",
-        "bg-[var(--color-hectoc-grid)] border-gray-700/60 text-[var(--color-hectoc-green)]",
+        "w-[52px] h-[52px] rounded-full border flex items-center justify-center font-semibold text-xl touch-none select-none transition-all duration-150",
+        "bg-[#222] border-[#444] text-[var(--color-hectoc-green)]",
         isOverlay 
           ? "opacity-90 scale-110 cursor-grabbing shadow-xl shadow-[var(--color-hectoc-green)]/10 border-[var(--color-hectoc-green)]/40" 
           : "cursor-grab active:cursor-grabbing active:scale-95"
@@ -36,34 +36,34 @@ export default function OperatorDock({ onUndo }) {
   const row2 = ['(', '/', ')'];
   
   return (
-    <div className="w-full flex flex-col items-center mt-6 gap-5 z-20">
+    <div className="w-full flex flex-col items-center pt-5 pb-2 gap-4 z-20 shrink-0">
       {/* Instruction */}
-      <div className="text-xs text-gray-500 font-medium tracking-wide">
+      <div className="text-[11px] text-gray-500 font-medium tracking-wide">
         Drag the  operations in the gaps
       </div>
       
       {/* Operator grid */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-3.5">
         {/* Row 1: + - X */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           {row1.map(op => (
             <DraggableOperator key={op} type={op} />
           ))}
         </div>
         
         {/* Row 2: ( / ) */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           {row2.map(op => (
             <DraggableOperator key={op} type={op} />
           ))}
         </div>
         
         {/* Row 3: ^ + Undo */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3.5">
           <DraggableOperator type="^" />
           <button 
             onClick={onUndo}
-            className="px-8 h-[60px] rounded-full bg-[var(--color-hectoc-grid)] border border-gray-700/60 flex items-center justify-center text-gray-300 font-semibold text-base active:scale-95 transition-all duration-150 cursor-pointer select-none touch-manipulation"
+            className="px-7 h-[52px] rounded-full bg-[#222] border border-[#444] flex items-center justify-center text-gray-300 font-semibold text-sm active:scale-95 transition-all duration-150 cursor-pointer select-none touch-manipulation"
           >
             Undo
           </button>

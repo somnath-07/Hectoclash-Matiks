@@ -11,14 +11,14 @@ export function Gap({ gapIndex, operators, onRemove }) {
     <div 
       ref={setNodeRef}
       className={cn(
-        "relative flex items-center justify-center min-w-[24px] h-[50px] transition-all duration-150",
+        "relative flex items-center justify-center min-w-[20px] h-[44px] transition-all duration-150",
         operators.length > 0 && "min-w-fit px-0.5",
         isOver && "scale-110"
       )}
     >
       {operators.length === 0 && (
         <div className={cn(
-          "w-[5px] h-[5px] rounded-full transition-all duration-200",
+          "w-[4px] h-[4px] rounded-full transition-all duration-200",
           isOver 
             ? "bg-[var(--color-hectoc-green)] shadow-[0_0_8px_var(--color-hectoc-green)]" 
             : "bg-gray-600"
@@ -28,7 +28,7 @@ export function Gap({ gapIndex, operators, onRemove }) {
         <button
           key={op.id}
           onClick={() => onRemove(gapIndex, op.id)}
-          className="text-2xl font-bold text-[var(--color-hectoc-green)] hover:text-red-400 active:text-red-500 active:scale-90 mx-[1px] cursor-pointer transition-all duration-150 touch-manipulation"
+          className="text-xl font-bold text-[var(--color-hectoc-green)] hover:text-red-400 active:text-red-500 active:scale-90 mx-[1px] cursor-pointer transition-all duration-150 touch-manipulation"
         >
           {op.type}
         </button>
@@ -47,7 +47,7 @@ export default function GameBoard({ digits, gaps, onRemoveOperator, currentResul
     for (let i = 0; i < digits.length; i++) {
       // Digit
       elements.push(
-        <div key={`digit-${i}`} className="text-[2.25rem] font-bold tracking-tight text-white select-none">
+        <div key={`digit-${i}`} className="text-[2rem] font-bold tracking-tight text-white select-none">
           {digits[i]}
         </div>
       );
@@ -59,22 +59,22 @@ export default function GameBoard({ digits, gaps, onRemoveOperator, currentResul
   }
 
   return (
-    <div className="w-full mt-4">
-      {/* Grid card container */}
-      <div className="w-full rounded-2xl bg-[var(--color-hectoc-card)] bg-grid-pattern overflow-hidden">
+    <div className="w-full flex-1 flex flex-col mt-3 min-h-0">
+      {/* Grid card container — flex-1 makes it fill available space */}
+      <div className="w-full flex-1 rounded-xl border border-gray-700/30 bg-[var(--color-hectoc-card)] bg-grid-pattern overflow-hidden flex flex-col items-center justify-center gap-4">
         {/* Digits row */}
-        <div className="flex items-center justify-center w-full px-4 pt-10 pb-4">
+        <div className="flex items-center justify-center w-full px-3">
           {renderBoard()}
         </div>
 
         {/* Result display inside the card */}
-        <div className="flex justify-center px-4 pb-8">
+        <div className="flex justify-center">
           {currentResult !== null ? (
-            <div className="text-xl font-bold bg-[#2a2a2a] px-10 py-2.5 rounded-2xl text-white min-w-[120px] text-center">
+            <div className="text-lg font-bold bg-[#252525] px-8 py-2 rounded-xl text-white min-w-[110px] text-center">
               {currentResult}
             </div>
           ) : (
-            <div className="w-[120px] h-[42px] bg-[#2a2a2a] rounded-2xl"></div>
+            <div className="w-[110px] h-[36px] bg-[#252525] rounded-xl"></div>
           )}
         </div>
       </div>

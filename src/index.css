@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-hectoc-bg: #111111;
+  --color-hectoc-bg: #151515;
   --color-hectoc-grid: #1e1e1e;
   --color-hectoc-green: #4ade80;
   --color-hectoc-operator: #1e293b;
   --color-hectoc-operator-text: #4ade80;
   --color-hectoc-gap-border: #333333;
-  --color-hectoc-card: #181818;
+  --color-hectoc-card: #1a1a1a;
   --font-family-hectoc: 'Inter', system-ui, sans-serif;
 }
 
@@ -34,8 +34,8 @@ body {
 /* Grid pattern for the game board card */
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 44px 44px;
+    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
   background-position: center center;
 }
