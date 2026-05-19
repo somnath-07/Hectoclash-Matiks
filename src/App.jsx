@@ -115,14 +115,13 @@ function App() {
       onDragEnd={handleDragEnd}
     >
       <div className="h-screen h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none overflow-hidden">
-        <div className="relative z-10 w-full max-w-md h-full flex flex-col pt-3 pb-4 px-5">
+        <div className="relative z-10 w-full max-w-md h-full flex flex-col pt-3 pb-[100px] px-5">
           <TopBar />
           
           <GameBoard 
             digits={digits} 
             gaps={gaps} 
             onRemoveOperator={removeOperator}
-            currentResult={currentResult}
           />
 
           <OperatorDock 

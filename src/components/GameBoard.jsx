@@ -37,7 +37,7 @@ export function Gap({ gapIndex, operators, onRemove }) {
   );
 }
 
-export default function GameBoard({ digits, gaps, onRemoveOperator, currentResult }) {
+export default function GameBoard({ digits, gaps, onRemoveOperator }) {
   const renderBoard = () => {
     const elements = [];
     
@@ -60,22 +60,11 @@ export default function GameBoard({ digits, gaps, onRemoveOperator, currentResul
 
   return (
     <div className="w-full flex-1 flex flex-col mt-3 min-h-0">
-      {/* Grid card container — flex-1 makes it fill available space */}
-      <div className="w-full flex-1 rounded-xl border border-gray-700/30 bg-[var(--color-hectoc-card)] bg-grid-pattern overflow-hidden flex flex-col items-center justify-center gap-4">
+      {/* Solid card container — flex-1 fills available space */}
+      <div className="w-full flex-1 rounded-xl border border-gray-700/30 bg-[#1E1E1E] overflow-hidden flex flex-col items-center justify-center">
         {/* Digits row */}
         <div className="flex items-center justify-center w-full px-3">
           {renderBoard()}
-        </div>
-
-        {/* Result display inside the card */}
-        <div className="flex justify-center">
-          {currentResult !== null ? (
-            <div className="text-lg font-bold bg-[#252525] px-8 py-2 rounded-xl text-white min-w-[110px] text-center">
-              {currentResult}
-            </div>
-          ) : (
-            <div className="w-[110px] h-[36px] bg-[#252525] rounded-xl"></div>
-          )}
         </div>
       </div>
     </div>
