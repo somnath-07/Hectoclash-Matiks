@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { DndContext, DragOverlay, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
+import { DndContext, DragOverlay, useSensor, useSensors, PointerSensor, TouchSensor } from '@dnd-kit/core';
 import { evaluate } from 'mathjs';
 import TopBar from './components/TopBar';
 import GameBoard from './components/GameBoard';
 import OperatorDock, { DraggableOperator } from './components/OperatorDock';
 
 function App() {
-  const [digits] = useState([2, 4, 9, 3, 8, 4]);
+  const [digits] = useState([1, 9, 6, 2, 6, 4]);
   // gaps is an array of 7 arrays. Each holds { id, type }
   const [gaps, setGaps] = useState(Array.from({ length: 7 }, () => []));
   const [history, setHistory] = useState([]); // Array of { gapIndex, opId }
@@ -17,6 +17,9 @@ function App() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 100, tolerance: 5 },
     })
   );
 
@@ -32,9 +35,6 @@ function App() {
         expr += gaps[i+1].map(op => op.type.replace('X', '*')).join('');
     }
 
-    const baselineStr = digits.join('');
-    // Prevent evaluating the baseline string since it's just the numbers combined unless they used an operator
-    
     let isDefault = true;
     for(let i=0; i< gaps.length; i++){
       if(gaps[i].length > 0) { isDefault = false; break; }
@@ -47,11 +47,8 @@ function App() {
 
     try {
       const res = evaluate(expr);
-      // Math.js can return floating point or exactly 100
       if (typeof res === 'number' && !isNaN(res)) {
-        // limit decimals just in case
         let finalRes = Number(res.toFixed(4));
-        // Remove trailing .0000
         if (finalRes === Math.floor(finalRes)) finalRes = Math.floor(finalRes);
 
         setCurrentResult(finalRes);
@@ -60,17 +57,16 @@ function App() {
           setHasWon(true);
         }
       } else {
-        setCurrentResult(null); // Invalid or infinity
+        setCurrentResult(null);
       }
     } catch (e) {
-      // Syntax errors expected during mid-typing like "24 - "
       setCurrentResult(null);
     }
 
   }, [gaps, digits, hasWon]);
 
   const handleDragStart = (event) => {
-    if (hasWon) return; // Freeze game if won
+    if (hasWon) return;
     setActiveDragOp(event.active.data.current?.type);
   };
 
@@ -118,32 +114,19 @@ function App() {
       onDragStart={handleDragStart} 
       onDragEnd={handleDragEnd}
     >
-      <div className="min-h-screen bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none">
-        <div className="fixed inset-0 pointer-events-none bg-grid-pattern opacity-[0.15]"></div>
-        
-        <div className="relative z-10 w-full max-w-md h-screen flex flex-col pt-6 pb-8 px-6 overflow-hidden">
+      <div className="min-h-screen min-h-[100dvh] bg-[var(--color-hectoc-bg)] text-white font-sans flex flex-col items-center select-none">
+        <div className="relative z-10 w-full max-w-md h-screen h-[100dvh] flex flex-col pt-4 pb-6 px-5 overflow-hidden">
           <TopBar />
           
           <GameBoard 
             digits={digits} 
             gaps={gaps} 
-            onRemoveOperator={removeOperator} 
+            onRemoveOperator={removeOperator}
+            currentResult={currentResult}
           />
-
-          {/* Live Feed Result */}
-          <div className="mt-8 mb-2 flex justify-center h-[54px]">
-            {currentResult !== null ? (
-              <div className="text-2xl font-bold bg-[#333] px-10 py-3 rounded-2xl shadow-inner text-white transition-all transform scale-100">
-                {currentResult}
-              </div>
-            ) : (
-              <div className="w-[120px] h-full bg-[#333] rounded-2xl opacity-60"></div>
-            )}
-          </div>
 
           <OperatorDock 
             onUndo={handleUndo} 
-            onHint={() => alert('Try combining 4 and 9 first!')} 
           />
 
           {hasWon && (
@@ -155,7 +138,7 @@ function App() {
                 </p>
                 <button 
                   onClick={() => window.location.reload()}
-                  className="px-8 py-3 bg-[var(--color-hectoc-green)] text-black font-bold rounded-full hover:bg-green-400 transition-colors"
+                  className="px-8 py-3 bg-[var(--color-hectoc-green)] text-black font-bold rounded-full hover:bg-green-400 transition-colors touch-manipulation"
                 >
                   Play Again
                 </button>

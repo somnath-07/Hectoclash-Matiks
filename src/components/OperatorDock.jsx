@@ -12,8 +12,6 @@ export function DraggableOperator({ type, id, isOverlay = false }) {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : undefined;
 
-  let content = type;
-
   return (
     <button
       ref={setNodeRef}
@@ -21,48 +19,56 @@ export function DraggableOperator({ type, id, isOverlay = false }) {
       {...listeners}
       {...attributes}
       className={cn(
-        "w-14 h-14 rounded-full bg-[var(--color-hectoc-grid)] border border-gray-700 shadow-lg flex items-center justify-center text-[var(--color-hectoc-green)] font-semibold text-2xl touch-none",
-        isOverlay ? "opacity-90 scale-105 cursor-grabbing" : "cursor-grab active:cursor-grabbing hover:bg-gray-800"
+        "w-[60px] h-[60px] rounded-full border flex items-center justify-center font-semibold text-2xl touch-none select-none transition-all duration-150",
+        "bg-[var(--color-hectoc-grid)] border-gray-700/60 text-[var(--color-hectoc-green)]",
+        isOverlay 
+          ? "opacity-90 scale-110 cursor-grabbing shadow-xl shadow-[var(--color-hectoc-green)]/10 border-[var(--color-hectoc-green)]/40" 
+          : "cursor-grab active:cursor-grabbing active:scale-95"
       )}
     >
-      {content}
+      {type}
     </button>
   );
 }
 
-export default function OperatorDock({ onUndo, onHint }) {
-  const operators = ['+', '-', 'X', '(', '/', ')', '^'];
+export default function OperatorDock({ onUndo }) {
+  const row1 = ['+', '-', 'X'];
+  const row2 = ['(', '/', ')'];
   
   return (
-    <div className="w-full flex flex-col items-center mt-12 mb-8 gap-6 z-20">
-      <div className="text-xs text-gray-400 font-medium">Drag the operations in the gaps</div>
+    <div className="w-full flex flex-col items-center mt-6 gap-5 z-20">
+      {/* Instruction */}
+      <div className="text-xs text-gray-500 font-medium tracking-wide">
+        Drag the  operations in the gaps
+      </div>
       
-      <div className="flex flex-wrap justify-center gap-4 max-w-[260px]">
-        {operators.slice(0, 3).map(op => (
-          <DraggableOperator key={op} type={op} />
-        ))}
-        {operators.slice(3, 6).map(op => (
-          <DraggableOperator key={op} type={op} />
-        ))}
-        <div className="flex justify-center w-full gap-4 relative left-3">
-          {operators.slice(6).map(op => (
+      {/* Operator grid */}
+      <div className="flex flex-col items-center gap-4">
+        {/* Row 1: + - X */}
+        <div className="flex items-center gap-5">
+          {row1.map(op => (
             <DraggableOperator key={op} type={op} />
           ))}
+        </div>
+        
+        {/* Row 2: ( / ) */}
+        <div className="flex items-center gap-5">
+          {row2.map(op => (
+            <DraggableOperator key={op} type={op} />
+          ))}
+        </div>
+        
+        {/* Row 3: ^ + Undo */}
+        <div className="flex items-center gap-4">
+          <DraggableOperator type="^" />
           <button 
             onClick={onUndo}
-            className="px-6 h-14 rounded-full bg-[var(--color-hectoc-grid)] border border-gray-700 shadow-lg flex items-center justify-center text-[var(--color-hectoc-green)] font-semibold text-lg hover:bg-gray-800 active:scale-95 transition-transform"
+            className="px-8 h-[60px] rounded-full bg-[var(--color-hectoc-grid)] border border-gray-700/60 flex items-center justify-center text-gray-300 font-semibold text-base active:scale-95 transition-all duration-150 cursor-pointer select-none touch-manipulation"
           >
             Undo
           </button>
         </div>
       </div>
-
-      <button 
-        onClick={onHint}
-        className="mt-6 px-6 py-2 rounded-full bg-[#1a1a1a] border border-[#333] flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
-      >
-        <span className="text-gray-400">💡</span> Hint
-      </button>
     </div>
   );
 }

@@ -7,6 +7,7 @@
   --color-hectoc-operator: #1e293b;
   --color-hectoc-operator-text: #4ade80;
   --color-hectoc-gap-border: #333333;
+  --color-hectoc-card: #181818;
   --font-family-hectoc: 'Inter', system-ui, sans-serif;
 }
 
@@ -16,15 +17,25 @@ body {
   background-color: var(--color-hectoc-bg);
   color: white;
   min-height: 100vh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
-/* Base grid pattern to match the screenshot */
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Grid pattern for the game board card */
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(to right, var(--color-hectoc-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-hectoc-grid) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center top;
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center center;
 }
