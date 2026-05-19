@@ -5,7 +5,7 @@ import GameBoard from './components/GameBoard';
 import OperatorDock from './components/OperatorDock';
 
 function App() {
-  const [digits] = useState([2, 4, 9, 3, 8, 4]);
+  const [digits] = useState([1, 9, 6, 2, 6, 4]);
   // gaps is an array of 7 arrays. Each holds { id, type }
   const [gaps, setGaps] = useState(Array.from({ length: 7 }, () => []));
   const [history, setHistory] = useState([]); // Array of { gapIndex, opId }
@@ -67,6 +67,7 @@ function App() {
       });
       setHistory(prev => [...prev, { gapIndex, opId: newOpId }]);
       setSelectedOperator(null);
+      setSelectedGap(gapIndex); // Select the gap so they can add more operators
     } else {
       setSelectedGap(prev => prev === gapIndex ? null : gapIndex);
     }
@@ -83,7 +84,7 @@ function App() {
         return next;
       });
       setHistory(prev => [...prev, { gapIndex: selectedGap, opId: newOpId }]);
-      setSelectedGap(null); // Clear gap after placing operator
+      // DO NOT clear selectedGap, so user can add multiple operators
     } else {
       setSelectedOperator(prev => prev === opType ? null : opType);
     }
