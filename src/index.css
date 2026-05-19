@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-hectoc-bg: #151515;
+  --color-hectoc-bg: #1E1E1E;
   --color-hectoc-grid: #1e1e1e;
   --color-hectoc-green: #4ade80;
   --color-hectoc-operator: #1e293b;
   --color-hectoc-operator-text: #4ade80;
   --color-hectoc-gap-border: #333333;
-  --color-hectoc-card: #1a1a1a;
+  --color-hectoc-card: #1E1E1E;
   --font-family-hectoc: 'Inter', system-ui, sans-serif;
 }
 

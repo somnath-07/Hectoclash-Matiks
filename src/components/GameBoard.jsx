@@ -60,8 +60,8 @@ export default function GameBoard({ digits, gaps, onRemoveOperator }) {
 
   return (
     <div className="w-full flex-1 flex flex-col mt-3 min-h-0">
-      {/* Solid card container — flex-1 fills available space */}
-      <div className="w-full flex-1 rounded-xl border border-gray-700/30 bg-[#1E1E1E] overflow-hidden flex flex-col items-center justify-center">
+      {/* Transparent card container — flex-1 fills available space */}
+      <div className="w-full flex-1 overflow-hidden flex flex-col items-center justify-center">
         {/* Digits row */}
         <div className="flex items-center justify-center w-full px-3">
           {renderBoard()}
